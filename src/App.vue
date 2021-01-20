@@ -1,12 +1,35 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div id="app">
+        <div id="nav">
+            <router-link to="/">Home</router-link> |
+            <router-link to="/about">About</router-link>
+            <template v-if="!isAuthenticated">
+                | <router-link to="/login">Login</router-link>
+            </template>
+            <template v-if="isAuthenticated">
+                | <a href="#" @click="logout">Logout</a>
+            </template>
+        </div>
+
+        <router-view/>
     </div>
-    <router-view/>
-  </div>
 </template>
+
+<script>
+export default {
+    methods: {
+        logout() {
+            this.$store.dispatch('logout');
+        }
+    },
+
+    computed: {
+        isAuthenticated() {
+            return this.$store.getters.isAuthenticated;
+        }
+    }
+}
+</script>
 
 <style>
 #app {
